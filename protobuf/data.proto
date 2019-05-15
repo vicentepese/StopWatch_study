@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+message AccelerometerSamplesV1 {
+  repeated double date = 1;
+  repeated double x = 2;
+  repeated double y = 3;
+  repeated double z = 4;
+  double start_date = 5;
+  double end_date = 6;
+  string participant_id = 7;
+}
+
+message AccelerometerSamplesV2 {
+  repeated double date = 1;
+  repeated float x = 2;
+  repeated float y = 3;
+  repeated float z = 4;
+  double start_date = 5;
+  double end_date = 6;
+  string participant_id = 7;
+
+  // This source field will help us distinguish
+  // between data collected on the watch and data
+  // collected on the phone.
+  enum Source {
+    WATCH = 0;
+    PHONE = 1;
+  }
+  Source source = 8;
+}
+
+message ActivitySamples {
+  repeated double date = 1;
+  repeated bool stationary = 2;
+  repeated bool walking = 3;
+  repeated bool running = 4;
+  repeated bool automotive = 5;
+  repeated bool cycling = 6;
+  repeated bool unknown = 7;
+  repeated int32 confidence = 8;
+  double start_date = 9;
+  double end_date = 10;
+  string participant_id = 11;
+}
+
+message FocusSession {
+  double start_date = 1;
+  double end_date = 2;
+
+  float focus_rating = 3;
+  float movement_rating = 5;
+
+  string participant_id = 4;
+
+  DeviceMotion device_motion = 6;
+
+  // We record seconds from the epoch for each time
+  // the screen appears/disappears
+  repeated double screen_did_appear = 7;
+  repeated double screen_will_disappear = 8;
+
+  // We record predictions and feedback given to
+  // the user.
+  enum Feedback {
+    FOCUS_START = 0;
+    FOCUS_END = 1;
+  }
+  repeated double feedback_time = 9;
+  repeated Feedback feedback = 10;
+
+  // TODO heart rate, magentic field?
+}
+
+// This message is used to hold a sequence of samples of a 3-vector.
+// We use this class when storing DeviceMotion.
+message VectorSamples {
+  repeated float x = 1;
+  repeated float y = 2;
+  repeated float z = 3;
+}
+
+message DeviceMotion {
+  VectorSamples user_acceleration = 1;
+  VectorSamples rotation_rate = 2;
+  VectorSamples gravity = 3;
+  repeated double date = 4;
+
+  // Data from CMAttitude
+  repeated float attitude_roll = 5;
+  repeated float attitude_pitch = 6;
+  repeated float attitude_yaw = 7;
+  repeated float heading = 8;
+}
+
+message PhoneFocusSession {
+  double start_date = 1;
+  double end_date = 2;
+
+  string participant_id = 3;
+
+  DeviceMotion device_motion = 4;
+}
+
