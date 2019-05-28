@@ -4,7 +4,7 @@ import gzip
 from scripts import data_pb2
 
 
-def _load_data(filename=None, fileobj=None):
+def _load_data(filename = None, fileobj = None):
     assert filename or fileobj, 'Must supply either filename or fileobj.'
     with gzip.GzipFile(filename=filename, fileobj=fileobj, mode='rb') as f:
         data = f.read()
